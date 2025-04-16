@@ -104,10 +104,10 @@ class BaseLLM:
                 for r in self.batched_generate(prompts[idx : idx + micro_batch_size], num_return_sequences, temperature)
             ]
 
-        print(type(prompts))
+        print("type of prompt: ", type(prompts))
         # tokenize the prompts
         inputs = self.tokenizer(prompts, padding=True, padding_side="left", return_tensors="pt")
-        print(type(inputs))
+        print("type of inputs: ", type(inputs))
         # call self.model.generate
         outputs = self.model.generate(
             inputs,
@@ -117,11 +117,11 @@ class BaseLLM:
             num_return_sequences=1 if not num_return_sequences else num_return_sequences,
             eos_token_id=self.tokenizer.eos_token_id,
         )
-        print(type(outputs))
+        print("type of outputs: ", type(outputs))
 
         # decode the outputs with self.tokenizer.batch_decode
         decoded_outputs = self.tokenizer.batch_decode(outputs[:, len(inputs["input_ids"][0]):], skip_special_tokens=True)
-        print(type(decoded_outputs))
+        print("type of decoded outputs: ", type(decoded_outputs))
         return decoded_outputs
 
     def answer(self, *questions) -> list[float]:
