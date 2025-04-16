@@ -120,11 +120,19 @@ class BaseLLM:
             num_return_sequences=1 if not num_return_sequences else num_return_sequences,
             eos_token_id=self.tokenizer.eos_token_id,
         )
-        print("type of outputs: ", type(outputs))
+        if isinstance(outputs, list) and all(isinstance(item, list) for item in outputs):
+            print("is a list of lists")
 
         # decode the outputs with self.tokenizer.batch_decode
-        decoded_outputs = self.tokenizer.batch_decode(outputs[:, len(inputs["input_ids"][0]):], skip_special_tokens=True)
-        print("type of decoded outputs: ", type(decoded_outputs))
+        #TODO: is this decoded output correct?
+        decoded_outputs = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+
+        # reshape the outputs if num_return_sequences is not None
+        if num_return_sequences is not None:
+            decoded_outputs = [
+                decoded_outputs[i : i + num_return_sequences] for i in range(0, len(decoded_outputs), num_return_sequences)
+            ]
+
         return decoded_outputs
 
     def answer(self, *questions) -> list[float]:
