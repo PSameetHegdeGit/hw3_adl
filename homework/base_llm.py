@@ -125,7 +125,7 @@ class BaseLLM:
 
         # decode the outputs with self.tokenizer.batch_decode
         #TODO: is this decoded output correct?
-        decoded_outputs = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        decoded_outputs = self.tokenizer.batch_decode(outputs[:, len(inputs["input_ids"][0]) :], skip_special_tokens=True)
 
         # reshape the outputs if num_return_sequences is not None
         if num_return_sequences is not None:
