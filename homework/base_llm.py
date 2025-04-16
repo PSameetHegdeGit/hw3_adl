@@ -106,7 +106,8 @@ class BaseLLM:
 
         # print("type of prompt: ", type(prompts))
         # tokenize the prompts
-        inputs = self.tokenizer(prompts, padding=True, padding_side="left", return_tensors="pt")
+        self.tokenizer.padding_side = "left"
+        inputs = self.tokenizer(prompts, padding=True,  return_tensors="pt")
         # print("type of inputs: ", type(inputs))
         # call self.model.generate
         # Need to pass input_ids as well as attention mask to self.model.generate
