@@ -7,6 +7,7 @@ class CoTModel(BaseLLM):
         Take a question and convert it into a chat template. The LLM will likely answer much
         better if you provide a chat template. self.tokenizer.apply_chat_template can help here
         """
+
         # TODO:
         messages = [
             {"role": "system", "content": "You are a helpful assistant. Be concise."},

@@ -114,7 +114,7 @@ class BaseLLM:
         outputs = self.model.generate(
             input_ids=inputs["input_ids"].to(self.device),
             attention_mask=inputs["attention_mask"].to(self.device),
-            max_new_tokens=50,
+            max_new_tokens=100,
             do_sample=temperature > 0,
             temperature=temperature,
             num_return_sequences=1 if not num_return_sequences else num_return_sequences,
