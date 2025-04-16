@@ -109,8 +109,11 @@ class BaseLLM:
         inputs = self.tokenizer(prompts, padding=True, padding_side="left", return_tensors="pt")
         print("type of inputs: ", type(inputs))
         # call self.model.generate
+        # Need to pass input_ids as well as attention mask to self.model.generate
+
         outputs = self.model.generate(
-            inputs,
+            inputs["input_ids"].to(self.device),
+            attention_mask=inputs["attention_mask"].to(self.device),
             max_new_tokens=50,
             do_sample=temperature > 0,
             temperature=temperature,
