@@ -110,7 +110,6 @@ class BaseLLM:
         # print("type of inputs: ", type(inputs))
         # call self.model.generate
         # Need to pass input_ids as well as attention mask to self.model.generate
-        print(inputs["input_ids"].shape)
         outputs = self.model.generate(
             inputs["input_ids"].to(self.device),
             attention_mask=inputs["attention_mask"].to(self.device),
@@ -134,6 +133,7 @@ class BaseLLM:
                 range(0, len(decoded_outputs), num_return_sequences)
             ]
 
+        print(decoded_outputs)
         return decoded_outputs
 
     def answer(self, *questions) -> list[float]:
