@@ -17,7 +17,7 @@ class CoTModel(BaseLLM):
 
         # TODO: Implement this method
         formatted_prompt = self.tokenizer.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
-        print(formatted_prompt)
+        # print(formatted_prompt)
         return formatted_prompt
 
 
