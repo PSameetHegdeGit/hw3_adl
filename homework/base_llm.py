@@ -46,7 +46,7 @@ class BaseLLM:
 
     @overload
     def batched_generate(
-        self, prompts: list[str], num_return_sequences: None = None, temperature: float = 0
+            self, prompts: list[str], num_return_sequences: None = None, temperature: float = 0
     ) -> list[str]:
         """
         Batched version of `generate` method.
@@ -55,7 +55,7 @@ class BaseLLM:
 
     @overload
     def batched_generate(
-        self, prompts: list[str], num_return_sequences: int, temperature: float = 0
+            self, prompts: list[str], num_return_sequences: int, temperature: float = 0
     ) -> list[list[str]]:
         """
         Batched version of `generate` method.
@@ -63,7 +63,7 @@ class BaseLLM:
         """
 
     def batched_generate(
-        self, prompts: list[str], num_return_sequences: int | None = None, temperature: float = 0
+            self, prompts: list[str], num_return_sequences: int | None = None, temperature: float = 0
     ) -> list[str] | list[list[str]]:
         """
         Batched version of `generate` method.
@@ -101,7 +101,7 @@ class BaseLLM:
                 for idx in tqdm(
                     range(0, len(prompts), micro_batch_size), desc=f"LLM Running on Micro Batches {micro_batch_size}"
                 )
-                for r in self.batched_generate(prompts[idx : idx + micro_batch_size], num_return_sequences, temperature)
+                for r in self.batched_generate(prompts[idx: idx + micro_batch_size], num_return_sequences, temperature)
             ]
 
         # print("type of prompt: ", type(prompts))
@@ -110,7 +110,7 @@ class BaseLLM:
         # print("type of inputs: ", type(inputs))
         # call self.model.generate
         # Need to pass input_ids as well as attention mask to self.model.generate
-
+        print(inputs["input_ids"].shape)
         outputs = self.model.generate(
             inputs["input_ids"].to(self.device),
             attention_mask=inputs["attention_mask"].to(self.device),
@@ -124,13 +124,14 @@ class BaseLLM:
         #     print("is a list of lists")
 
         # decode the outputs with self.tokenizer.batch_decode
-        #TODO: is this decoded output correct?
-        decoded_outputs = self.tokenizer.batch_decode(outputs[:, len(inputs["input_ids"][0]) :], skip_special_tokens=True)
+        # TODO: is this decoded output correct?
+        decoded_outputs = self.tokenizer.batch_decode(outputs[:, len(inputs["input_ids"][0]):], skip_special_tokens=True)
 
         # reshape the outputs if num_return_sequences is not None
         if num_return_sequences is not None:
             decoded_outputs = [
-                decoded_outputs[i : i + num_return_sequences] for i in range(0, len(decoded_outputs), num_return_sequences)
+                decoded_outputs[i: i + num_return_sequences] for i in
+                range(0, len(decoded_outputs), num_return_sequences)
             ]
 
         return decoded_outputs
