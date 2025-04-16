@@ -133,7 +133,6 @@ class BaseLLM:
                 range(0, len(decoded_outputs), num_return_sequences)
             ]
 
-        print(decoded_outputs)
         return decoded_outputs
 
     def answer(self, *questions) -> list[float]:
