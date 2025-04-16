@@ -104,10 +104,10 @@ class BaseLLM:
                 for r in self.batched_generate(prompts[idx : idx + micro_batch_size], num_return_sequences, temperature)
             ]
 
-        print("type of prompt: ", type(prompts))
+        # print("type of prompt: ", type(prompts))
         # tokenize the prompts
         inputs = self.tokenizer(prompts, padding=True, padding_side="left", return_tensors="pt")
-        print("type of inputs: ", type(inputs))
+        # print("type of inputs: ", type(inputs))
         # call self.model.generate
         # Need to pass input_ids as well as attention mask to self.model.generate
 
@@ -120,8 +120,8 @@ class BaseLLM:
             num_return_sequences=1 if not num_return_sequences else num_return_sequences,
             eos_token_id=self.tokenizer.eos_token_id,
         )
-        if isinstance(outputs, list) and all(isinstance(item, list) for item in outputs):
-            print("is a list of lists")
+        # if isinstance(outputs, list) and all(isinstance(item, list) for item in outputs):
+        #     print("is a list of lists")
 
         # decode the outputs with self.tokenizer.batch_decode
         #TODO: is this decoded output correct?
