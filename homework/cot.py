@@ -13,6 +13,12 @@ class CoTModel(BaseLLM):
             {"role": "system", "content": "You are a helpful assistant. Be concise."},
             {"role": "user", "content": "How many grams are in 2 kilograms?"},
             {"role": "assistant", "content": "1 kilogram = 1000 grams. 2 * 1000 = <answer>2000</answer>."},
+            {"role": "user", "content": "How many grams are in 3 kilograms?"},
+            {"role": "assistant", "content": "1 kilogram = 1000 grams. 3 * 1000 = <answer>3000</answer>."},
+            {"role": "user", "content": "How many grams are in 4.5 kilograms?"},
+            {"role": "assistant", "content": "1 kilogram = 1000 grams. 4.5 * 1000 = <answer>4500</answer>."},
+            {"role": "user", "content": "How many grams are in 0.75 kilograms?"},
+            {"role": "assistant", "content": "1 kilogram = 1000 grams. 0.75 * 1000 = <answer>750</answer>."},
             {"role": "user", "content": question},
         ]
 
