@@ -49,7 +49,12 @@ def format_example(prompt: str, answer: str) -> dict[str, str]:
     """
     Construct a question / answer pair. Consider rounding the answer to make it easier for the LLM.
     """
-    raise NotImplementedError()
+    if answer.isdigit():
+        answer = round(float(answer), 3)
+    return {
+        "question": prompt,
+        "answer": f"<answer>{answer}</answer>",
+    }
 
 
 class TokenizedDataset:
@@ -78,8 +83,33 @@ def train_model(
     output_dir: str,
     **kwargs,
 ):
-    raise NotImplementedError()
-    test_model(output_dir)
+    from peft import get_peft_model, LoraConfig
+    from transformers import Trainer, TrainingArguments
+
+    llm = BaseLLM()
+    get_peft_model(llm.model, LoraConfig(**kwargs))
+    llm.model.enable_input_require_grads()
+
+    training_args = TrainingArguments(
+        output_dir=output_dir,
+        logging_dir=output_dir,
+        report_to="tensorboard",
+        gradient_checkpointing=True,
+        learning_rate=5e-4,
+        num_train_epochs=5,
+        per_device_train_batch_size=32
+    )
+
+    trainer = Trainer(
+        model=llm.model,
+        args=training_args,
+        train_dataset=TokenizedDataset(llm.tokenizer, Dataset("data/train"), format_example),
+        eval_dataset=TokenizedDataset(llm.tokenizer, Dataset("data/valid"), format_example),
+    )
+    trainer.train()
+    trainer.save_model(output_dir)
+
+    test_model("homework/sft_model")
 
 
 def test_model(ckpt_path: str):
