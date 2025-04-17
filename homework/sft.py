@@ -110,11 +110,8 @@ def train_model(
     )
     trainer.train()
 
-    model_name = "sft_model"
-    model_path = (Path(__file__).parent / model_name).as_posix()
-
-    trainer.save_model(model_path)
-    test_model(model_path)
+    trainer.save_model(output_dir)
+    test_model(output_dir)
 
 
 def test_model(ckpt_path: str):
