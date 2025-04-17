@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from .base_llm import BaseLLM
 from .data import Dataset, benchmark
 
@@ -107,9 +109,12 @@ def train_model(
         eval_dataset=TokenizedDataset(llm.tokenizer, Dataset("valid"), format_example),
     )
     trainer.train()
-    trainer.save_model("homework/sft_model")
 
-    test_model("homework/sft_model")
+    model_name = "sft_model"
+    model_path = (Path(__file__).parent / model_name).as_posix()
+
+    trainer.save_model(model_path)
+    test_model(model_path)
 
 
 def test_model(ckpt_path: str):
