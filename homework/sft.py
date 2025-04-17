@@ -85,9 +85,10 @@ def train_model(
     output_dir: str,
     **kwargs,
 ):
-    from peft import get_peft_model, LoraConfig
+    from peft import get_peft_model, LoraConfig, PeftModel
     from transformers import Trainer, TrainingArguments
 
+    print("kwargs: ", kwargs)
     llm = BaseLLM()
     get_peft_model(llm.model, LoraConfig(**kwargs))
     llm.model.enable_input_require_grads()
@@ -108,9 +109,10 @@ def train_model(
         train_dataset=TokenizedDataset(llm.tokenizer, Dataset("train"), format_example),
         eval_dataset=TokenizedDataset(llm.tokenizer, Dataset("valid"), format_example),
     )
-    trainer.train()
 
+    trainer.train()
     trainer.save_model(output_dir)
+
     test_model(output_dir)
 
 
