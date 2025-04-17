@@ -110,9 +110,7 @@ def train_model(
     )
 
     trainer.train()
-    Trainer.save_model(output_dir)
-
-    test_model(output_dir)
+    trainer.save_model()
 
 
 def test_model(ckpt_path: str):
