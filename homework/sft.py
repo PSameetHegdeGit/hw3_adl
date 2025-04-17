@@ -89,7 +89,9 @@ def train_model(
     from transformers import Trainer, TrainingArguments
 
     llm = BaseLLM()
-    get_peft_model(llm.model, LoraConfig(**kwargs))
+    print(type(llm.model))
+    llm.model = get_peft_model(llm.model, LoraConfig(**kwargs))
+    print(type(llm.model))
     llm.model.enable_input_require_grads()
 
     training_args = TrainingArguments(
