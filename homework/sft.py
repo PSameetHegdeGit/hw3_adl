@@ -110,7 +110,7 @@ def train_model(
     )
 
     trainer.train()
-    trainer.save_model(output_dir)
+    Trainer.save_model(output_dir)
 
     test_model(output_dir)
 
