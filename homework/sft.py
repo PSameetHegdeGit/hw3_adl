@@ -49,8 +49,8 @@ def format_example(prompt: str, answer: str) -> dict[str, str]:
     """
     Construct a question / answer pair. Consider rounding the answer to make it easier for the LLM.
     """
-    if answer.isdigit():
-        answer = round(float(answer), 3)
+
+    answer = round(float(answer), 3)
     return {
         "question": prompt,
         "answer": f"<answer>{answer}</answer>",
