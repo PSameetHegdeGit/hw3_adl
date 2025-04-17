@@ -1,5 +1,6 @@
+from homework import Dataset
 from .base_llm import BaseLLM
-from .sft import test_model
+from .sft import test_model, TokenizedDataset, format_example
 
 
 def load() -> BaseLLM:
@@ -22,7 +23,32 @@ def train_model(
     **kwargs,
 ):
     # Reuse much of the SFT code here
-    raise NotImplementedError()
+    from peft import get_peft_model, LoraConfig, PeftModel
+    from transformers import Trainer, TrainingArguments
+
+    llm = BaseLLM()
+    llm.model = get_peft_model(llm.model, LoraConfig(**kwargs))
+    llm.model.enable_input_require_grads()
+
+    training_args = TrainingArguments(
+        output_dir=output_dir,
+        logging_dir=output_dir,
+        report_to="tensorboard",
+        gradient_checkpointing=True,
+        learning_rate=5e-4,
+        num_train_epochs=5,
+        per_device_train_batch_size=32
+    )
+
+    trainer = Trainer(
+        model=llm.model,
+        args=training_args,
+        train_dataset=TokenizedDataset(llm.tokenizer, Dataset("train"), format_example),
+        eval_dataset=TokenizedDataset(llm.tokenizer, Dataset("valid"), format_example),
+    )
+
+    trainer.train()
+    trainer.save_model()
 
 
 if __name__ == "__main__":
