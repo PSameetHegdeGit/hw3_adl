@@ -107,7 +107,7 @@ def train_model(
         eval_dataset=TokenizedDataset(llm.tokenizer, Dataset("valid"), format_example),
     )
     trainer.train()
-    trainer.save_model(output_dir)
+    trainer.save_model("homework/sft_model")
 
     test_model("homework/sft_model")
 
