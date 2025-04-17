@@ -103,8 +103,8 @@ def train_model(
     trainer = Trainer(
         model=llm.model,
         args=training_args,
-        train_dataset=TokenizedDataset(llm.tokenizer, Dataset("data/train"), format_example),
-        eval_dataset=TokenizedDataset(llm.tokenizer, Dataset("data/valid"), format_example),
+        train_dataset=TokenizedDataset(llm.tokenizer, Dataset("train"), format_example),
+        eval_dataset=TokenizedDataset(llm.tokenizer, Dataset("valid"), format_example),
     )
     trainer.train()
     trainer.save_model(output_dir)
