@@ -88,7 +88,6 @@ def train_model(
     from peft import get_peft_model, LoraConfig, PeftModel
     from transformers import Trainer, TrainingArguments
 
-    print("kwargs: ", kwargs)
     llm = BaseLLM()
     get_peft_model(llm.model, LoraConfig(**kwargs))
     llm.model.enable_input_require_grads()
